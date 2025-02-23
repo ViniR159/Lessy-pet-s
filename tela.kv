@@ -26,6 +26,7 @@
         TextInput:
             id: quant
             hint_text: 'Quantidade de dogs'
+            input_filter: 'int'
             
         Button:
             text: 'Cadastrar'
@@ -36,30 +37,29 @@
 
 <Client>:
     BoxLayout:
+        padding: ('100dp', '50dp', '100dp', '50dp')
         orientation: 'vertical'
-        
+
         Label:
-            text:'Pets a cadastrar'
-        
+            id: label_status
+            text: "Cadastro 1"
+
         TextInput:
             id: nome_pet
-            hint_text: 'nome_pet'
+            hint_text: 'Nome do Pet'
 
         TextInput:
-            id: idade
-            hint_text: 'idade'
+            id: Raca
+            hint_text: 'Raça do Pet'
 
         TextInput:
-            id: especie
-            hint_text: 'especie'
+            id: idade_pet
+            hint_text: 'Idade do Pet'
+            input_filter: 'int'
 
-        TextInput:
-            id: raca
-            hint_text: 'raca'
-
-        TextInput:
-            id: quant
-            hint_text: 'Quantidade de dogs'
+        Button:
+            text: 'Cadastrar'
+            on_press: root.cadastrar_pet()
         
 <Principal>:
     BoxLayout:
