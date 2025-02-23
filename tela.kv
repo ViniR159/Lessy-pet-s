@@ -1,0 +1,69 @@
+<gerenciador>:
+    Login:
+        name: "login"
+    Client:
+        name: "Client"
+    Principal:
+        name: "Principal"
+<Login>:
+
+    BoxLayout:
+        padding: ('100dp', '50dp', '100dp', '50dp')
+        orientation: 'vertical'
+        
+        TextInput:
+            id: nome
+            hint_text: 'nome'
+
+        TextInput:
+            id: email
+            hint_text: 'email'
+
+        TextInput:
+            id: senha
+            hint_text: 'Senha'
+
+        TextInput:
+            id: quant
+            hint_text: 'Quantidade de dogs'
+            
+        Button:
+            text: 'Cadastrar'
+            on_press: root.butao()
+
+        Button:
+            text: 'já cadastrados'
+
+<Client>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        Label:
+            text:'Pets a cadastrar'
+        
+        TextInput:
+            id: nome_pet
+            hint_text: 'nome_pet'
+
+        TextInput:
+            id: idade
+            hint_text: 'idade'
+
+        TextInput:
+            id: especie
+            hint_text: 'especie'
+
+        TextInput:
+            id: raca
+            hint_text: 'raca'
+
+        TextInput:
+            id: quant
+            hint_text: 'Quantidade de dogs'
+        
+<Principal>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        Label:
+            text:'já cadastrado'
