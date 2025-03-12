@@ -7,7 +7,7 @@ import re
 import login
 from Login import client
 
-identificador = "A"
+identificador = ""
 class gerenciador(ScreenManager):
     pass
 
@@ -44,9 +44,8 @@ class Login(Screen):
         if q > 0:
             self.manager.get_screen("Client").quantidade_restante = q
             self.manager.get_screen("Client").quantidade_total = q
-            self.manager.get_screen("Client").dono = n
-            identificador = n
-
+            self.manager.get_screen("Client").identificador = n
+    
             self.manager.current = "Client"
         else:
             self.manager.current = "Principal"
@@ -60,7 +59,7 @@ class Login(Screen):
 
 
 class Client(Screen):
-    dono = ""
+    identificador = "aaaa"
     quantidade_restante = 0
     quantidade_total = 0
 
@@ -69,6 +68,7 @@ class Client(Screen):
         raca_pet = self.ids.Raca.text
         idade_pet = self.ids.idade_pet.text
 
+
         if not nome_pet or not raca_pet or not idade_pet.isdigit():
             self.mostrar_popup("Preencha todos os campos corretamente!")
             return
@@ -76,7 +76,7 @@ class Client(Screen):
         self.quantidade_restante -= 1
 
         print(f"Pet cadastrado: Nome: {nome_pet}, Raca: {raca_pet}, Idade: {idade_pet}")
-        client.cadastrar_dog(nome_pet, raca_pet, idade_pet)
+        client.cadastrar_dog(identificador, nome_pet, raca_pet, idade_pet)
 
         self.ids.nome_pet.text = ""
         self.ids.Raca.text = ""

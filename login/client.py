@@ -1,15 +1,25 @@
 from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 import main
 
-db = create_engine(f"sqlite:///login/clients/{main.identificador}.db")
-Session = sessionmaker(bind=db)
-session = Session()
-
 Client = declarative_base()
+def criar_arquivo(identificador):
+    
+    identificador = identificador
+    caminho_db = f"login/clients/{identificador}.db"
+    print(identificador)
+
+    os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
+
+    db = create_engine(f"sqlite:///{caminho_db}")
+    Session = sessionmaker(bind=db)
+    session = Session()
+
+    return db, session
 
 class client(Client):
-    __tablename__ = main.identificador
+    __tablename__ = "pet"
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     nome_pet = Column("nome_pet", String)
@@ -21,10 +31,13 @@ class client(Client):
         self.idade = idade
         self.raca = raca
 
+def cadastrar_dog(identificador, Nd, idade, Raca):
+    engine, session = criar_arquivo(identificador)
+    print(identificador)
 
-Client.metadata.create_all(bind=db)
+    Client.metadata.create_all(bind=engine)
 
-def cadastrar_dog(Nd, idade, Raca):
     dog = client(nome_pet=Nd, idade=idade, raca=Raca)
     session.add(dog)
     session.commit()
+    session.close()
