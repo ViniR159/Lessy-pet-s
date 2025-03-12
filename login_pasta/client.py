@@ -7,7 +7,8 @@ Client = declarative_base()
 def criar_arquivo(identificador):
     
     identificador = identificador
-    caminho_db = f"login/clients/{identificador}.db"
+    print(identificador)
+    caminho_db = f"login_pasta/clients/{identificador}.db"
     print(identificador)
 
     os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
