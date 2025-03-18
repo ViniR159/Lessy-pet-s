@@ -7,7 +7,7 @@ import re
 import login
 from login_pasta import client
 
-identificador = "22222"
+identificador = ""
 class gerenciador(ScreenManager):
     pass
 
@@ -45,7 +45,7 @@ class Login(Screen):
         client_screen = self.manager.get_screen("Client")
         client_screen.quantidade_restante = q
         client_screen.quantidade_total = q
-        client_screen.identificador = n  # Agora referenciando corretamente o atributo de instância
+        client_screen.identificador = n 
 
         self.manager.current = "Client" if q > 0 else "Principal"
 
@@ -60,7 +60,7 @@ class Login(Screen):
 class Client(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.identificador = ""  # Agora como atributo de instância
+        self.identificador = ""
         self.quantidade_restante = 0
         self.quantidade_total = 0
 
@@ -76,7 +76,7 @@ class Client(Screen):
         self.quantidade_restante -= 1
 
         print(f"Pet cadastrado: Nome: {nome_pet}, Raca: {raca_pet}, Idade: {idade_pet}")
-        client.cadastrar_dog(self.identificador, nome_pet, raca_pet, idade_pet)  # Use self.identificador
+        client.cadastrar_dog(self.identificador, nome_pet, idade_pet, raca_pet) 
 
         self.ids.nome_pet.text = ""
         self.ids.Raca.text = ""

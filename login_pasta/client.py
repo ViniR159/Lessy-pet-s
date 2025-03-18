@@ -1,16 +1,21 @@
-from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
+from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
-import main
 
 Client = declarative_base()
 def criar_arquivo(identificador):
     
     identificador = identificador
-    print(identificador)
     caminho_db = f"login_pasta/clients/{identificador}.db"
-    print(identificador)
 
+    pasta= f"{identificador}/"
+    if(not os.path.exists(pasta)):
+        os.mkdir(pasta)
+    else:
+        print("hummm")
+    print("print")
+    
+    
     os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
 
     db = create_engine(f"sqlite:///{caminho_db}")
@@ -34,7 +39,6 @@ class client(Client):
 
 def cadastrar_dog(identificador, Nd, idade, Raca):
     engine, session = criar_arquivo(identificador)
-    print(identificador)
 
     Client.metadata.create_all(bind=engine)
 
