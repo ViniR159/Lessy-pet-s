@@ -8,13 +8,9 @@ def criar_arquivo(identificador):
     identificador = identificador
     caminho_db = f"login_pasta/clients/{identificador}.db"
 
-    pasta= f"{identificador}/"
+    pasta= f"login_pasta/clients/{identificador}/"
     if(not os.path.exists(pasta)):
         os.mkdir(pasta)
-    else:
-        print("hummm")
-    print("print")
-    
     
     os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
 
@@ -37,7 +33,7 @@ class client(Client):
         self.idade = idade
         self.raca = raca
 
-def cadastrar_dog(identificador, Nd, idade, Raca):
+def cadastrar_dog(identificador, Nd, idade, Raca,):
     engine, session = criar_arquivo(identificador)
 
     Client.metadata.create_all(bind=engine)

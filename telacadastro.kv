@@ -3,8 +3,12 @@
         name: "login"
     Client:
         name: "Client"
+    Pet:
+        name: "Pet"
     Principal:
         name: "Principal"
+    PastaPets:
+        name: "PastaPets"
 <Login>:
 
     BoxLayout:
@@ -34,6 +38,7 @@
 
         Button:
             text: 'já cadastrados'
+            on_press: app.root.current = "Principal"
 
 <Client>:
     BoxLayout:
@@ -60,10 +65,52 @@
         Button:
             text: 'Cadastrar'
             on_press: root.cadastrar_pet()
-        
-<Principal>:
+
+<Pet>:
     BoxLayout:
+        padding: ('100dp', '50dp', '100dp', '50dp')
         orientation: 'vertical'
         
         Label:
-            text:'já cadastrado'
+            id: nome_pet
+            text: "Nome_pet"
+
+        TextInput:
+            id: pacote
+            hint_text: 'é pacote'
+
+        TextInput:
+            id: Valor
+            hint_text: 'Valor'
+
+        TextInput:
+            id: data
+            hint_text: 'data'
+
+        Button:
+            text: 'Cadastrar'
+            on_press: root.criar_dog()
+        
+<Principal>:
+    BoxLayout:
+        orientation: 'vertical' 
+        ScrollView:
+            GridLayout:
+                id: lista_clients
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+<PastaPets>:
+    BoxLayout:
+        orientation: 'vertical' 
+        ScrollView:
+            GridLayout:
+                id: lista_clients
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+
+
+
