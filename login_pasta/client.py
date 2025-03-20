@@ -5,7 +5,7 @@ import os
 Client = declarative_base()
 def criar_arquivo(identificador):
     
-    identificador = identificador
+    identificador = identificador.replace(" ", "_")
     caminho_db = f"login_pasta/clients/{identificador}.db"
 
     pasta= f"login_pasta/clients/{identificador}/"

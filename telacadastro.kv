@@ -1,6 +1,8 @@
 <gerenciador>:
     Login:
-        name: "login"
+        name: "Login"
+    Cadastro:
+        name: "Cadastro"
     Client:
         name: "Client"
     Pet:
@@ -9,15 +11,83 @@
         name: "Principal"
     PastaPets:
         name: "PastaPets"
+    InfoPet:
+        name: "InfoPet"
+
+
 <Login>:
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1 
+        Rectangle:
+            pos: self.pos
+            size: self.size  
 
     BoxLayout:
         padding: ('100dp', '50dp', '100dp', '50dp')
         orientation: 'vertical'
-        
+        TextInput:
+            id: email
+            hint_text: 'email'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            border: (5, 5, 5, 5)  
+            canvas.after:
+                Color:
+                    rgba: (0.2, 0.6, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
+        TextInput:
+            id: senha
+            hint_text: 'Senha'
+
+        Button:
+            text: 'Cadastrar'
+            on_press: root.butao()
+
+        Button:
+            text: 'Login'
+            on_press: app.root.current = "Cadastro"
+
+    FloatLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: .5, .5, .5, 1
+            Line:
+                width: 2
+                rectangle: self.x, self.y, self.width, self.height
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (1, 1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+<Cadastro>:
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1 
+        Rectangle:
+            pos: self.pos
+            size: self.size       
+    BoxLayout:
+        padding: ('100dp', '50dp', '100dp', '50dp')
+        orientation: 'vertical'
         TextInput:
             id: nome
-            hint_text: 'nome'
+            hint_text: 'Nome'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            border: (5, 5, 5, 5)  
+            canvas.after:
+                Color:
+                    rgba: (0.2, 0.6, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: email
@@ -39,6 +109,20 @@
         Button:
             text: 'já cadastrados'
             on_press: app.root.current = "Principal"
+
+    FloatLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: .5, .5, .5, 1
+            Line:
+                width: 2
+                rectangle: self.x, self.y, self.width, self.height
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.2, 0.2)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
 
 <Client>:
     BoxLayout:
@@ -73,7 +157,7 @@
         
         Label:
             id: nome_pet
-            text: "Nome_pet"
+            text: ""
 
         TextInput:
             id: pacote
@@ -106,11 +190,30 @@
         orientation: 'vertical' 
         ScrollView:
             GridLayout:
-                id: lista_clients
+                id: lista_pets
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
 
+<InfoPet>:
+    BoxLayout:
+        orientation: 'vertical' 
+        Label:
+            id: NomePet
+            text: "teste"
+            size_hint_y: None
+            height: self.texture_size[1] + 10 
+            padding: 10
+
+        ScrollView:
+            size_hint_y: 1  # Ocupa todo o espaço disponível
+            do_scroll_x: False  # Impede rolagem horizontal
+            GridLayout:            
+                id: lista_pets
+                cols: 5
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 10
 
 
 

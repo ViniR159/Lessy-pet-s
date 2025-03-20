@@ -1,24 +1,49 @@
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.config import Config
+from kivy.animation import Animation
+from kivy.clock import Clock
 import re
 import os
-import login
-from login_pasta import client
-from login_pasta import pets
+import cadastro
+from login_pasta import client, pets
+import sqlite3
+from kivy.uix.screenmanager import ScreenManager, FadeTransition
 
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.gridlayout import GridLayout
-
+Config.set('graphics', 'width', '360')
+Config.set('graphics', 'height', '640')
+Config.set('graphics', 'resizable', False)
 
 identificador = ""
 class gerenciador(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.transition = FadeTransition()
 
 class Login(Screen):
+    def on_enter(self):
+        Clock.schedule_once(self.animar_logo, 0.5)
+
+    def animar_logo(self, *args):
+        anim = Animation(size_hint=(0.2, 0.2), pos_hint={"center_x": 0.5, "center_y": 0.9}, duration=2, t="in_out_quart")
+        anim.start(self.ids.logo)
+
+    def validar_email(self, email):
+        padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        return re.match(padrao, email)
+    
+    def login():
+        pass
+
+    def cadastro(self):
+        self.manager.current = "Cadastro"
+
+
+
+class Cadastro(Screen):
     def validar_email(self, email):
         padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(padrao, email)
@@ -30,24 +55,24 @@ class Login(Screen):
         s = self.ids.senha.text
         q = self.ids.quant.text
 
-        # if not self.validar_email(e):
-        #     self.mostrar_popup("E-mail inválido! Digite um e-mail válido.")
-        #     return
+        if not self.validar_email(e):
+            self.mostrar_popup("E-mail inválido! Digite um e-mail válido.")
+            return
 
-        # if not n or not e or not s or not q:
-        #     self.mostrar_popup("Preencha todos os campos!")
-        #     return
+        if not n or not e or not s or not q:
+            self.mostrar_popup("Preencha todos os campos!")
+            return
 
-        # if not q.isdigit():
-        #     self.mostrar_popup("Quantidade deve ser um número inteiro!")
-        #     return
+        if not q.isdigit():
+            self.mostrar_popup("Quantidade deve ser um número inteiro!")
+            return
 
         q = int(q)
         if q <= 0:
             self.mostrar_popup("A quantidade deve ser maior que 0!")
             return
 
-        login.criar(n, e, s, q)
+        cadastro.criar(n, e, s, q)
 
         client_screen = self.manager.get_screen("Client")
         client_screen.quantidade_restante = q
@@ -70,18 +95,6 @@ class Client(Screen):
         self.identificador = ""
         self.quantidade_restante = 0
         self.quantidade_total = 0 
-
-    # def mostrar_pet(identificador):
-
-    #     if not tabelas:
-    #         self.ids.lista_pets.add_widget(Label(text="Nenhum pet cadastrado.", size_hint_y=None, height=40))
-    #         return
-        
-    #     for tabela in tabelas:
-    #         pets = client.buscar_dados_tabela(self.identificador, tabela)
-    #         for pet in pets:
-    #             pet_texto = f"Tabela: {tabela} | ID: {pet[0]} | Nome: {pet[1]} | Idade: {pet[2]} | Raça: {pet[3]}"
-    #             self.ids.lista_pets.add_widget(Label(text=pet_texto, size_hint_y=None, height=40))
 
     def cadastrar_pet(self):
         nome_pet = self.ids.nome_pet.text
@@ -123,6 +136,9 @@ class Pet(Screen):
         self.identificador = ""
         self.nomep = ""
 
+    def on_enter(self):
+        self.ids.nome_pet.text = f"Fale mais sobre {self.nomep}"
+    
     def criar_dog(self):
         pacote = self.ids.pacote.text
         Valor = self.ids.Valor.text
@@ -157,39 +173,95 @@ class Principal(Screen):
             lista_clients.add_widget(Label(text="Nenhum pet cadastrado.", size_hint_y=None, height=40))
         else:
             for arquivo in arquivos_db:
-                lista_clients.add_widget(Label(text=arquivo, size_hint_y=None, height=40))
+                arquivo_ = arquivo.replace(".db", "").replace("_", " ")
+                lista_clients.add_widget(Label(text=arquivo_, size_hint_y=None, height=40))
 
                 btn = Button(text="Abrir", size_hint_y=None, height=40)
                 btn.bind(on_release=lambda btn, arq=arquivo: self.abrir_arquivo(arq))
                 lista_clients.add_widget(btn)
 
+                btn = Button(text="Editar/atualizar", size_hint_y=None, height=40)
+                btn.bind(on_release=lambda btn, arq=arquivo: self.exibir_dados(arq, self.identificador))
+                lista_clients.add_widget(btn)
+
     def abrir_arquivo(self, nome_arquivo):
-        caminho_completo = os.path.join(self.pastaCliente, nome_arquivo)
-        print(f"Abrindo arquivo: {caminho_completo}") 
+        tela_pasta_pets = self.manager.get_screen("PastaPets") 
+        nome_pasta = nome_arquivo.replace(".db", "")
+        tela_pasta_pets.identificador = nome_pasta
+        tela_pasta_pets.abrirListaP()
+
+        self.manager.current = "PastaPets"
 
 
 class PastaPets(Screen):
-    pastapets = "login_pasta\clients"
-    def on_enter(self):
-        lista_clients = self.ids.get("lista_clients")
 
-        lista_clients.clear_widgets()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.identificador = ""  
+        self.nomeP = ""
 
-        arquivos_db = [arquivo for arquivo in os.listdir(self.pastaCliente) if arquivo.endswith(".db")]
+    def abrirListaP(self):
+        self.pastapets = f"login_pasta/clients/{self.identificador}"
+
+        lista_pets = self.ids.get("lista_pets")
+        lista_pets.clear_widgets()
+
+        arquivos_db = [arquivo for arquivo in os.listdir(self.pastapets) if arquivo.endswith(".db")]
 
         if not arquivos_db:
-            lista_clients.add_widget(Label(text="Nenhum pet cadastrado.", size_hint_y=None, height=40))
+            lista_pets.add_widget(Label(text="Nenhum pet cadastrado.", size_hint_y=None, height=40))
         else:
             for arquivo in arquivos_db:
-                lista_clients.add_widget(Label(text=arquivo, size_hint_y=None, height=40))
+                arquivo_ = arquivo.replace(".db", "").replace("_", " ")
+                lista_pets.add_widget(Label(text=arquivo_, size_hint_y=None, height=40))
 
                 btn = Button(text="Abrir", size_hint_y=None, height=40)
-                btn.bind(on_release=lambda btn, arq=arquivo: self.abrir_arquivo(arq))
-                lista_clients.add_widget(btn)
+                btn.bind(on_release=lambda btn, arq=arquivo: self.exibir_dados(arq, self.identificador))
+                lista_pets.add_widget(btn)
 
-    def abrir_arquivo(self, nome_arquivo):
-        caminho_completo = os.path.join(self.pastaCliente, nome_arquivo)
-        print(f"Abrindo arquivo: {caminho_completo}") 
+                btn = Button(text="Editar/atualizar", size_hint_y=None, height=40)
+                btn.bind(on_release=lambda btn, arq=arquivo: self.exibir_dados(arq, self.identificador))
+                lista_pets.add_widget(btn)
+
+    def exibir_dados(self, nome_pet, nome):
+        InfoPets = self.manager.get_screen("InfoPet") 
+        nomepet = nome_pet.replace(".db", "")
+        InfoPets.nomeP = nomepet
+        InfoPets.pasta = nome
+        InfoPets.mostrarDadosPet()
+
+        self.manager.current = "InfoPet"
+    
+class InfoPet(Screen):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.pasta = ""  
+        self.nomeP = ""
+
+    def on_enter(self):
+        self.ids.NomePet.text = self.nomeP.replace("_", " ")
+
+    def mostrarDadosPet(self):
+        
+        try:
+            conexao = sqlite3.connect(f"login_pasta/clients/{self.pasta}/{self.nomeP}.db")
+            cursor = conexao.cursor()
+
+            cursor.execute("SELECT pacote, data_do_agendamento, valor FROM pet")
+            dados = cursor.fetchall()
+
+            if not dados:
+                self.ids.lista_pets.add_widget(Label(text="Nenhum pet encontrado."))
+
+            for pacote, data, valor in dados:
+                self.ids.lista_pets.add_widget(Label(text=f"É pacote: {pacote}"))
+                self.ids.lista_pets.add_widget(Label(text=f"Data: {data}"))
+                self.ids.lista_pets.add_widget(Label(text=f"Valor: {valor}"))
+
+            conexao.close()
+        except Exception as e:
+            print("Erro ao acessar o banco:", e)
 
 class Telacadastro(App):
     def build(self):

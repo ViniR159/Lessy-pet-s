@@ -5,6 +5,8 @@ import os
 Pet = declarative_base()
 def criar_arquivo(identificador, nome_pet):
   
+    identificador = identificador.replace(" ", "_")
+    nome_pet = nome_pet.replace(" ", "_")
     caminho_db = f"login_pasta/clients/{identificador}/{nome_pet}.db"    
     
     os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
@@ -20,7 +22,7 @@ class pet(Pet):
 
     Visita = Column("id", Integer, primary_key=True, autoincrement=True)
     pacote = Column("pacote", String)
-    data_agendamento = Column("data do agendamento", String)
+    data_agendamento = Column("data_do_agendamento", String)
     Valor = Column("valor", String)
 
     def __init__(self, Valor, data_agendamento, pacote):
