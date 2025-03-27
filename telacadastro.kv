@@ -18,72 +18,136 @@
 <Login>:
     canvas.before:
         Color: 
-            rgba: 255/255, 100/255, 194/255, 1 
+            rgba: 255/255, 100/255, 194/255, 1
         Rectangle:
             pos: self.pos
             size: self.size  
 
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: (0, self.height * 0.85)
+            size: (self.width, self.height* 0.3)
+
+        
+    FloatLayout:
+        Button:
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: 255/255, 100/255, 194/255, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]  
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size: (1, 1)
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
     BoxLayout:
-        padding: ('100dp', '50dp', '100dp', '50dp')
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
         orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         TextInput:
             id: email
-            hint_text: 'email'
+            hint_text: 'Email'
             foreground_color: (1, 1, 1, 1)
             background_color: (0, 0, 0, 0) 
-            border: (5, 5, 5, 5)  
-            canvas.after:
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
                 Color:
-                    rgba: (0.2, 0.6, 1, 1)
+                    rgba: (1, 1, 1, 0.2)
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
                     radius: [20] 
+
         TextInput:
             id: senha
             hint_text: 'Senha'
+            password: True
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]  
 
         Button:
             text: 'Cadastrar'
-            on_press: root.butao()
+            color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            on_press: root.cadastro()
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]  
 
         Button:
             text: 'Login'
             on_press: app.root.current = "Cadastro"
-
-    FloatLayout:
-        orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: .5, .5, .5, 1
-            Line:
-                width: 2
-                rectangle: self.x, self.y, self.width, self.height
-        Image:
-            id: logo
-            source: "Imagens/Logo_Lassy.png" 
-            size_hint: (1, 1)
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]  
 
 <Cadastro>:
     canvas.before:
         Color: 
-            rgba: 255/255, 100/255, 194/255, 1 
+            rgba: 255/255, 100/255, 194/255, 1
         Rectangle:
             pos: self.pos
-            size: self.size       
+            size: self.size  
+
+    FloatLayout:
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.3, 0.3)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
     BoxLayout:
-        padding: ('100dp', '50dp', '100dp', '50dp')
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
         orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         TextInput:
             id: nome
             hint_text: 'Nome'
             foreground_color: (1, 1, 1, 1)
             background_color: (0, 0, 0, 0) 
-            border: (5, 5, 5, 5)  
-            canvas.after:
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
                 Color:
-                    rgba: (0.2, 0.6, 1, 1)
+                    rgba: (1, 1, 1, 0.2)
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
@@ -91,93 +155,293 @@
 
         TextInput:
             id: email
-            hint_text: 'email'
+            hint_text: 'Email'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: senha
             hint_text: 'Senha'
+            password: True
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
 
         TextInput:
             id: quant
             hint_text: 'Quantidade de dogs'
             input_filter: 'int'
-            
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+
         Button:
             text: 'Cadastrar'
             on_press: root.butao()
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
 
         Button:
-            text: 'já cadastrados'
+            text: 'Já cadastrados'
             on_press: app.root.current = "Principal"
+            color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+
+
+<Client>: 
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size  
 
     FloatLayout:
-        orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: .5, .5, .5, 1
-            Line:
-                width: 2
-                rectangle: self.x, self.y, self.width, self.height
         Image:
             id: logo
             source: "Imagens/Logo_Lassy.png" 
-            size_hint: (0.2, 0.2)
+            size_hint: (0.3, 0.3)
             pos_hint: {"center_x": 0.5, "center_y": 0.9}
-
-<Client>:
+            
     BoxLayout:
-        padding: ('100dp', '50dp', '100dp', '50dp')
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
         orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
-        Label:
-            id: label_status
-            text: "Cadastro 1"
+        # Label:
+        #     id: label_status
+        #     text: "Cadastro 1"
+        #     font_size: '20sp'
+        #     color: (1, 1, 1, 1)  # Texto branco para contraste
+        #     size_hint_y: None
+        #     height: '40dp'
 
         TextInput:
             id: nome_pet
             hint_text: 'Nome do Pet'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: Raca
             hint_text: 'Raça do Pet'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: idade_pet
             hint_text: 'Idade do Pet'
-            input_filter: 'int'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         Button:
             text: 'Cadastrar'
             on_press: root.cadastrar_pet()
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
 
-<Pet>:
+
+<Pet>: 
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size  
+
+    FloatLayout:
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.3, 0.3)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
     BoxLayout:
-        padding: ('100dp', '50dp', '100dp', '50dp')
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
         orientation: 'vertical'
-        
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         Label:
             id: nome_pet
-            text: ""
+            text: "Fale mais sobre"
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: pacote
             hint_text: 'é pacote'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: Valor
             hint_text: 'Valor'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         TextInput:
             id: data
-            hint_text: 'data'
+            hint_text: 'Data'
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0) 
+            size_hint_y: None
+            height: '50dp'  
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.2)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20] 
 
         Button:
             text: 'Cadastrar'
             on_press: root.criar_dog()
+            foreground_color: (1, 1, 1, 1)
+            background_color: (0, 0, 0, 0)  
+            size_hint_y: None
+            height: '50dp'
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 0.3)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+
         
 <Principal>:
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size  
+
+    FloatLayout:
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.3, 0.3)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
     BoxLayout:
-        orientation: 'vertical' 
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
+        orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         ScrollView:
             GridLayout:
                 id: lista_clients
@@ -186,8 +450,27 @@
                 height: self.minimum_height
 
 <PastaPets>:
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size  
+
+    FloatLayout:
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.3, 0.3)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
     BoxLayout:
-        orientation: 'vertical' 
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
+        orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         ScrollView:
             GridLayout:
                 id: lista_pets
@@ -196,8 +479,27 @@
                 height: self.minimum_height
 
 <InfoPet>:
+    canvas.before:
+        Color: 
+            rgba: 255/255, 100/255, 194/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size  
+
+    FloatLayout:
+        Image:
+            id: logo
+            source: "Imagens/Logo_Lassy.png" 
+            size_hint: (0.3, 0.3)
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+
     BoxLayout:
-        orientation: 'vertical' 
+        padding: ('50dp', '150dp', '50dp', '50dp')
+        spacing: '10dp'
+        orientation: 'vertical'
+        size_hint: (0.9, 0.6)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
         Label:
             id: NomePet
             text: "teste"
@@ -217,3 +519,15 @@
 
 
 
+<CustomButton@Button>:
+    size_hint_y: None
+    height: 50
+    color: (1, 1, 1, 1)  # Texto branco
+    background_color: (0, 0, 0, 0)  # Transparente
+    canvas.before:
+        Color:
+            rgba: (1, 1, 1, 0.3)  # Fundo branco transparente
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20]

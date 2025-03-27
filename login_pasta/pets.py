@@ -1,41 +1,46 @@
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
-import os
+from urllib.parse import quote
 
-Pet = declarative_base()
-def criar_arquivo(identificador, nome_pet):
-  
-    identificador = identificador.replace(" ", "_")
-    nome_pet = nome_pet.replace(" ", "_")
-    caminho_db = f"login_pasta/clients/{identificador}/{nome_pet}.db"    
-    
-    os.makedirs(os.path.dirname(caminho_db), exist_ok=True)
+senha = "Lessypets987@"
+senha_segura = quote(senha, safe="") 
+ 
+DATABASE_URL = f"postgresql://postgres:{senha_segura}@db.xgokuxjnlcvyzpatobne.supabase.co:5432/postgres"
 
-    db = create_engine(f"sqlite:///{caminho_db}")
-    Session = sessionmaker(bind=db)
-    session = Session()
+db = create_engine(DATABASE_URL)
 
-    return db, session
+Session = sessionmaker(bind=db)
+session = Session()
 
-class pet(Pet):
-    __tablename__ = "pet"
+# Base para os modelos
+Base = declarative_base()
 
-    Visita = Column("id", Integer, primary_key=True, autoincrement=True)
-    pacote = Column("pacote", String)
-    data_agendamento = Column("data_do_agendamento", String)
-    Valor = Column("valor", String)
+def criar_tabela(schema, nome_pet):
+    """Cria a tabela 'nome_pet_informacoes' dentro do schema"""
+    nome_tabela = f"{nome_pet.replace(' ', '_').lower()}_visitas"
 
-    def __init__(self, Valor, data_agendamento, pacote):
-        self.Valor = Valor
-        data_agendamento = data_agendamento
-        self.pacote = pacote
+    class PetInfo(Base):
+        __tablename__ = nome_tabela
+        __table_args__ = {"schema": schema}
 
-def criar_arquivo_pet(identificador, nome_pet, Valor, data, pacote):
-    engine, session = criar_arquivo(identificador, nome_pet)
+        id = Column("id", Integer, primary_key=True, autoincrement=True)
+        pacote = Column("pacote", String)
+        data_agendamento = Column("data_do_agendamento", String)
+        valor = Column("valor", String)
 
-    pet.metadata.create_all(bind=engine)
+        def __init__(self, pacote, data_agendamento, valor):
+            self.pacote = pacote
+            self.data_agendamento = data_agendamento
+            self.valor = valor
 
-    dog = pet(pacote=pacote, data_agendamento=data, Valor=Valor)
-    session.add(dog)
+    Base.metadata.create_all(bind=db)
+    return PetInfo
+
+def cadastrar_informacoes(identificador, nome_pet, valor, data, pacote):
+    """Registra informações do pet no banco"""
+    PetInfo = criar_tabela(identificador, nome_pet)
+
+    nova_visita = PetInfo(pacote=pacote, data_agendamento=data, valor=valor)
+    session.add(nova_visita)
     session.commit()
     session.close()
